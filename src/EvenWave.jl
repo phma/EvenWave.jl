@@ -1,5 +1,5 @@
 module EvenWave
-export φz,rotx
+export φz,rotx,tumble
 
 using Quaternions
 
@@ -9,6 +9,14 @@ using Quaternions
 
 function rotx(θ::AbstractFloat)
   quat(cos(θ),sin(θ),0,0)
+end
+
+function tumble(θ::AbstractFloat)
+  if abs(θ)<eps(typeof(θ))/16
+    rotx(θ)
+  else
+    rotx(θ)*(φz*tumble(θ/ℯ)*conj(φz))
+  end
 end
 
 end # module EvenWave
