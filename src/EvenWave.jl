@@ -1,5 +1,5 @@
 module EvenWave
-export φz,rotx,tumble,norm
+export φz,rotx,tumble,norm,rotate
 
 using Quaternions
 
@@ -21,6 +21,12 @@ end
 
 function norm(q::Quaternion)
   √real(q*conj(q))
+end
+
+function rotate(q::Quaternion,v::Vector{<:AbstractFloat})
+  @assert(length(v)==3)
+  qv=Quaternion(0,v[1],v[2],v[3])
+  imag_part(q*qv*conj(q))
 end
 
 end # module EvenWave
