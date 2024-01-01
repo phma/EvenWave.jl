@@ -1,5 +1,5 @@
 module EvenWave
-export φz,rotx,tumble
+export φz,rotx,tumble,norm
 
 using Quaternions
 
@@ -17,6 +17,10 @@ function tumble(θ::AbstractFloat)
   else
     rotx(θ)*(φz*tumble(θ/ℯ)*conj(φz))
   end
+end
+
+function norm(q::Quaternion)
+  √real(q*conj(q))
 end
 
 end # module EvenWave
