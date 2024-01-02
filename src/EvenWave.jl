@@ -1,5 +1,5 @@
 module EvenWave
-export φz,rotx,tumble,norm,rotate
+export φz,rotx,tumble,norm,rotate,evenWave
 
 using Quaternions
 
@@ -27,6 +27,14 @@ function rotate(q::Quaternion,v::Vector{<:AbstractFloat})
   @assert(length(v)==3)
   qv=Quaternion(0,v[1],v[2],v[3])
   imag_part(q*qv*conj(q))
+end
+
+function evenWave(x::AbstractFloat)
+  # Any combination of unit vector input and component of output gives
+  # a function that covers [-1,1] evenly.
+  q=tumble(x)
+  q/=norm(q)
+  rotate(q,[0.0,0.0,1.0])[3]
 end
 
 end # module EvenWave
