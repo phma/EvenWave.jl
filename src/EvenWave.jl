@@ -1,5 +1,6 @@
 module EvenWave
-export φz,rotx,tumble,norm,rotate,evenWave
+using GLMakie
+export φz,rotx,tumble,norm,rotate,evenWave,graph
 
 using Quaternions
 
@@ -19,13 +20,13 @@ function tumble(θ::AbstractFloat)
   end
 end
 
-function norm(q::Quaternion)
+function norm(q::Quaternions.Quaternion)
   √real(q*conj(q))
 end
 
-function rotate(q::Quaternion,v::Vector{<:AbstractFloat})
+function rotate(q::Quaternions.Quaternion,v::Vector{<:AbstractFloat})
   @assert(length(v)==3)
-  qv=Quaternion(0,v[1],v[2],v[3])
+  qv=Quaternions.Quaternion(0,v[1],v[2],v[3])
   imag_part(q*qv*conj(q))
 end
 
@@ -36,5 +37,11 @@ function evenWave(x::AbstractFloat)
   q/=norm(q)
   rotate(q,[0.0,0.0,1.0])[3]
 end
+
+graph=Figure()
+x=range(0,30,length=450)
+y=evenWave.(x)
+lines(graph[1,1],x,y)
+graph
 
 end # module EvenWave
